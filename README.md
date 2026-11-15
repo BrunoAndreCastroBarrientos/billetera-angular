@@ -1,59 +1,48 @@
-# BilleteraAngular
+# Mi Billetera Digital — Angular (Caso 2)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.43.
+Evaluación T1 · Soluciones Web · UPN
 
-## Development server
+## Integrantes
 
-To start a local development server, run:
+| Nombre | Código |
+|---|---|
+| Bruno Andre Castro Barrientos | N00375795 |
+| Joseth Valdez Lopez | N00374266 |
 
-```bash
-ng serve
+## Versiones
+
+- Node.js 20+ / npm 10+
+- Angular 20.3 (componentes standalone)
+- Bootstrap 5.3.8
+
+## Estructura
+
+```
+src/app/
+├── app.ts / app.html                 Contenedor (navbar + <app-billetera>)
+├── movimiento.ts                     Interfaz Movimiento { tipo, monto }
+├── billetera/                        PADRE: dueño del saldo y del historial
+└── nuevo-movimiento/                 HIJO: formulario y validaciones
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Padre (`BilleteraComponent`)**: tiene el saldo inicial (S/ 250.00) y el historial. Muestra el saldo por interpolación, el historial con `@for` y “Aún no hay movimientos” con `@if`. Actualiza el estado cuando el hijo emite un movimiento, y agrega el más reciente al inicio de la lista.
+- **Hijo (`NuevoMovimientoComponent`)**: recibe el saldo con `input()` y emite el movimiento válido con `output()`. Usa `@if` para los mensajes de error y `[disabled]` para bloquear el botón cuando el monto está vacío, no es numérico, es ≤ 0 o es un gasto mayor que el saldo.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Ejecución
 
 ```bash
-ng generate --help
+npm install
+npm start          # equivale a: ng serve
 ```
 
-## Building
+Abrir http://localhost:4200
 
-To build the project run:
+## Pruebas funcionales
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+| # | Acción | Resultado |
+|---|---|---|
+| 1 | Abrir la app | Saldo S/ 250.00, “Aún no hay movimientos” |
+| 2 | Recarga de 100 | Saldo S/ 350.00, la recarga aparece en el historial |
+| 3 | Gasto de 80 | Saldo S/ 270.00, el gasto aparece primero |
+| 4 | Gasto de 500 | Mensaje “Saldo insuficiente…” y botón deshabilitado |
+| 5 | Monto vacío o 0 | Botón deshabilitado |
