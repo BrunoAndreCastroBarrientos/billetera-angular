@@ -1,0 +1,41 @@
+<div class="row g-4">
+  <!-- Estado del padre -->
+  <div class="col-lg-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+        <span class="fw-semibold">Mi billetera</span>
+        <span class="badge text-bg-secondary">Padre</span>
+      </div>
+
+      <div class="card-body">
+        <p class="text-muted text-uppercase small mb-1">Saldo disponible</p>
+        <p class="display-5 fw-bold text-success">S/ {{ saldo | number: '1.2-2' }}</p>
+
+        <h5 class="mt-4">Movimientos</h5>
+        <ul class="list-group">
+          @for (mov of movimientos; track $index) {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="badge rounded-pill px-3"
+                    [class.text-bg-success]="mov.tipo === 'Recarga'"
+                    [class.text-bg-danger]="mov.tipo === 'Gasto'">{{ mov.tipo }}</span>
+              <span class="fw-semibold"
+                    [class.text-success]="mov.tipo === 'Recarga'"
+                    [class.text-danger]="mov.tipo === 'Gasto'">
+                {{ mov.tipo === 'Recarga' ? '+' : '-' }} S/ {{ mov.monto | number: '1.2-2' }}
+              </span>
+            </li>
+          }
+        </ul>
+
+        @if (movimientos.length === 0) {
+          <div class="alert alert-secondary mb-0">Aún no hay movimientos</div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Hijo: recibe el saldo con input() y emite con output() -->
+  <div class="col-lg-6">
+    <app-nuevo-movimiento [saldo]="saldo" (movimiento)="procesarMovimiento($event)" />
+  </div>
+</div>

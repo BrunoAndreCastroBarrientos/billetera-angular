@@ -1,11 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
+import { BilleteraComponent } from './billetera/billetera.component';
 
+/** Contenedor de la aplicación. */
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [BilleteraComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('billetera-angular');
-}
+export class App {}
